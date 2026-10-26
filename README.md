@@ -7,6 +7,11 @@ prototipi va xavf bali dvigateli.
 > **Namuna ma'lumotlar.** Barcha shaxslar, ismlar, raqamlar va hodisalar to'qima — manba hujjatdagi
 > (`Xodim_Aloqalar_Xaritasi.docx`, 24.10.2026) namuna bilan bir xil.
 
+## Onlayn ko'rish
+
+- **Loyiha tuzilishi:** https://sharofiddin1952-blip.github.io/xodim-aloqalar-xaritasi/
+- **Nazorat paneli:** https://sharofiddin1952-blip.github.io/xodim-aloqalar-xaritasi/prototype/admin-panel.html
+
 ## Qanday ochish
 
 O'rnatish, internet yoki build kerak emas — fayllarni brauzerda oching:
