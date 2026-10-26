@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xodim Aloqalar Xaritasi — Loyiha tuzilishi</title>
+<style>
+:root{
+  --bg:#F5F6F9;--surface:#FFFFFF;--surface-alt:#FAFBFC;--border:#E2E5EC;--border-strong:#CBD2DE;
+  --text-1:#0F1522;--text-2:#4B5468;--text-3:#8A93A3;
+  --blue:#2C4CE0;--blue-bg:#EAEEFC;--green:#157A4A;--green-bg:#E4F5EC;--red:#B3261E;--red-bg:#FCEAE9;
+  --amber:#A15C00;--amber-bg:#FCEFDD;--purple:#6339B8;--purple-bg:#F0EBFB;
+  --navy-1:#0B1220;--navy-2:#121B2E;--navy-text:#C9D2E3;--navy-text-dim:#7C8AA6;
+  --mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:20px;}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--text-1);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.mono{font-family:var(--mono);}
+.muted{color:var(--text-3);}
+.dim{color:var(--text-2);}
+header.hero{background:var(--navy-1);color:#fff;padding:34px 0 30px;}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px;}
+.hero .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:#FFC46B;border:1px dashed #8a6a3a;border-radius:6px;padding:3px 9px;margin-bottom:14px;}
+.hero h1{font-size:34px;margin:0 0 6px;letter-spacing:-.5px;}
+.hero p{color:var(--navy-text);margin:0;max-width:820px;font-size:15px;}
+.hero .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;color:var(--navy-text-dim);font-size:12.5px;font-family:var(--mono);}
+.hero .cta{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;font-weight:600;font-size:13.5px;border:1px solid transparent;}
+.btn.primary{background:#3E63FF;color:#fff;}
+.btn.ghost{border-color:rgba(255,255,255,.22);color:#fff;}
+.btn:hover{text-decoration:none;filter:brightness(1.08);}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-top:26px;}
+.stats div{background:var(--navy-2);padding:14px 16px;}
+.stats b{display:block;font-family:var(--mono);font-size:24px;}
+.stats span{font-size:11px;color:var(--navy-text-dim);text-transform:uppercase;letter-spacing:.5px;}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;padding-top:26px;padding-bottom:60px;}
+nav.toc{position:sticky;top:18px;align-self:start;font-size:13px;max-height:calc(100vh - 36px);overflow:auto;}
+nav.toc a{display:block;padding:5px 10px;border-left:2px solid var(--border);color:var(--text-2);}
+nav.toc a:hover{border-left-color:var(--blue);color:var(--text-1);text-decoration:none;}
+nav.toc .h{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);font-weight:700;margin:0 0 8px 10px;}
+section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px 30px;margin-bottom:20px;}
+section h2{font-size:21px;margin:0 0 4px;letter-spacing:-.2px;display:flex;gap:10px;align-items:baseline;}
+section h2 .n{font-family:var(--mono);color:var(--text-3);font-size:14px;font-weight:500;}
+section h3{font-size:15px;margin:22px 0 8px;}
+section .lead{color:var(--text-2);margin:0 0 16px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-3);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--border);background:var(--surface-alt);}
+td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.tbl{border:1px solid var(--border);border-radius:9px;overflow:auto;}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:20px;white-space:nowrap;}
+.b-red{background:var(--red-bg);color:var(--red);}
+.b-amber{background:var(--amber-bg);color:var(--amber);}
+.b-green{background:var(--green-bg);color:var(--green);}
+.b-blue{background:var(--blue-bg);color:var(--blue);}
+.b-purple{background:var(--purple-bg);color:var(--purple);}
+.b-gray{background:#EEF0F4;color:var(--text-2);}
+.mark{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;letter-spacing:.3px;}
+.m-taklif{background:var(--purple-bg);color:var(--purple);}
+.m-taxmin{background:var(--amber-bg);color:var(--amber);}
+.m-hujjat{background:var(--green-bg);color:var(--green);}
+.grid{display:grid;gap:14px;}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr));}
+.box{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--surface-alt);}
+.box h4{margin:0 0 6px;font-size:14px;}
+.box p{margin:0;color:var(--text-2);font-size:13px;}
+.box .r{font-size:11.5px;color:var(--text-3);margin-top:8px;}
+a.box{display:block;color:inherit;}
+a.box:hover{border-color:var(--blue);text-decoration:none;background:#fff;}
+.callout{display:flex;gap:12px;padding:12px 15px;border-radius:9px;margin:12px 0;font-size:13.5px;}
+.callout.info{background:var(--blue-bg);color:#22378F;}
+.callout.warn{background:var(--amber-bg);color:#7A4600;}
+.callout.ok{background:var(--green-bg);color:#0F5C37;}
+ul.tight{margin:6px 0;padding-left:20px;}
+ul.tight li{margin-bottom:4px;}
+.flow{display:flex;gap:0;align-items:stretch;flex-wrap:wrap;margin:10px 0;}
+.flow .st{flex:1 1 140px;border:1px solid var(--border);border-radius:9px;padding:11px 12px;background:#fff;position:relative;margin:0 18px 10px 0;}
+.flow .st::after{content:'→';position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--text-3);font-weight:700;}
+.flow .st:last-child::after{content:'';}
+.flow .st b{display:block;font-size:13px;}
+.flow .st span{font-size:12px;color:var(--text-2);}
+.flow .st .who{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--blue);font-weight:700;}
+pre.tree{background:var(--navy-1);color:var(--navy-text);padding:18px 20px;border-radius:10px;font-family:var(--mono);font-size:12.5px;line-height:1.7;overflow:auto;margin:0;}
+pre.tree b{color:#fff;font-weight:600;}
+pre.tree i{color:var(--navy-text-dim);font-style:normal;}
+.erd{width:100%;height:auto;border:1px solid var(--border);border-radius:10px;background:#FBFCFE;}
+.ok{color:var(--green);font-weight:700;}
+.bad{color:var(--red);font-weight:700;}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;font-size:13.5px;}
+.kv .k{color:var(--text-3);}
+footer{color:var(--text-3);font-size:12px;text-align:center;padding:10px 0 40px;}
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr;}
+  nav.toc{display:none;}
+  .stats{grid-template-columns:repeat(3,1fr);}
+  .g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px;}
+  section{padding:20px 18px;}
+  .hero h1{font-size:26px;}
+  .g2,.g3,.g4{grid-template-columns:1fr;}
+  .kv{grid-template-columns:1fr;}
+}
+@media print{
+  header.hero{background:#fff;color:#000;}
+  nav.toc,.hero .cta{display:none;}
+  .layout{display:block;}
+  section{break-inside:avoid-page;border:none;padding:10px 0;}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">NAMUNA MA'LUMOTLAR · SHAXSLAR TO'QIMA</span>
+    <h1>Xodim Aloqalar Xaritasi</h1>
+    <p>Ichki ishlar xodimlari faoliyatini nazorat qilish: tekshiruvlarni yagona tarmoqda bog'lash va aloqador shaxslar bilan aloqalarni tahlil qilish tizimi. Bu sahifa — loyihaning tuzilishi: maqsad, rollar, ekranlar, ma'lumotlar modeli, metodika, hujjat tahlili, ochiq savollar va yo'l xaritasi.</p>
+    <div class="meta"><span>v0.1 · prototip</span><span>Manba: Xodim_Aloqalar_Xaritasi.docx (24.10.2026)</span><span>Yangilandi: 26.10.2026</span></div>
+    <div class="cta">
+      <a class="btn primary" href="prototype/admin-panel.html">Prototipni ochish →</a>
+      <a class="btn ghost" href="#topilmalar">Hujjat tahlili</a>
+      <a class="btn ghost" href="#savollar">Ochiq savollar</a>
+    </div>
+    <div class="stats">
+      <div><b>13</b><span>ekran</span></div>
+      <div><b>11</b><span>obyekt</span></div>
+      <div><b>4</b><span>rol</span></div>
+      <div><b id="st-ok">—</b><span>ball tasdiqlandi</span></div>
+      <div><b>13</b><span>topilma</span></div>
+      <div><b>16</b><span>ochiq savol</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc">
+    <div class="h">Mundarija</div>
+    <a href="#xulosa">0. Qisqacha</a>
+    <a href="#maqsad">1. Maqsad va natija</a>
+    <a href="#skoup">2. Skoup va fazalar</a>
+    <a href="#rollar">3. Rollar va huquqlar</a>
+    <a href="#ekranlar">4. Modullar va ekranlar</a>
+    <a href="#model">5. Ma'lumotlar modeli</a>
+    <a href="#metodika">6. Xavf bali metodikasi</a>
+    <a href="#jarayon">7. Jarayonlar</a>
+    <a href="#topilmalar">8. Hujjat tahlili: topilmalar</a>
+    <a href="#savollar">9. Ochiq savollar</a>
+    <a href="#takliflar">10. Takliflar</a>
+    <a href="#nft">11. Xavfsizlik va NFT</a>
+    <a href="#arxitektura">12. Arxitektura</a>
+    <a href="#yol">13. Yo'l xaritasi</a>
+    <a href="#repo">14. Repozitoriy tuzilishi</a>
+    <a href="#lugat">15. Lug'at</a>
+  </nav>
+
+  <main>
+    <!-- 0 -->
+    <section id="xulosa">
+      <h2><span class="n">0</span>Qisqacha</h2>
+      <p class="lead">Tizim xodimga nisbatan o'tkazilgan turli tekshiruvlarni (deklaratsiya, bank hisoblari, poligraf, telefon, ijtimoiy tarmoq, murojaat, mol-mulk, qarindoshlar) bitta joyga jamlaydi va ularni aloqador shaxslar bilan <b>graf</b> ko'rinishida bog'laydi. Alohida ko'rilganda sezilmaydigan bog'liqliklar — masalan, bir nechta xodimga umumiy bo'lgan shubhali shaxs — avtomatik ko'rinadi. Har bir xodim uchun 0–100 <b>xavf bali</b> va uning sabablari hisoblanadi.</p>
+      <div class="grid g3">
+        <div class="box"><h4>Nima qilindi</h4><p>Hujjat to'liq tahlil qilindi, ballar dvigatel bilan qayta hisoblab <b>tasdiqlandi</b> (6/6). 13 ekranli interaktiv nazorat paneli (Garant panellari uslubida), shu sahifa va tekshiruv skripti.</p></div>
+        <div class="box"><h4>Nima topildi</h4><p>13 ta kamchilik/ziddiyat. Eng muhimi: <b>bilvosita aloqalar</b> ballga kirmaydi — Ergashev va Nazarova ikki xavf klasteriga shaxs orqali ulangan, hujjat §8 tavsiyalarida esa ular yo'q.</p></div>
+        <div class="box"><h4>Nima kerak</h4><p>16 ta ochiq savolga javob (huquqiy asos, hajm, integratsiyalar, metodika qoidalari). Javobsiz qolganlari uchun <span class="mark m-taxmin">TAXMIN</span> bilan davom etildi.</p></div>
+      </div>
+      <div class="callout warn"><span>⚠</span><div><b>Muhim tamoyil:</b> xavf bali — <b>qaror emas</b>, ko'rib chiqish navbatini belgilash vositasi. Har qanday xulosa xizmat tekshiruvi doirasida, xodimning tushuntirishi bilan tasdiqlanadi. Tizim bu tamoyilni interfeysda ham aytadi.</div></div>
+      <p class="muted" style="font-size:12.5px;margin-bottom:0">Belgilar: <span class="mark m-hujjat">HUJJAT</span> — manba hujjatdan · <span class="mark m-taklif">TAKLIF</span> — bizning taklifimiz, buyurtmachi tasdig'i kerak · <span class="mark m-taxmin">TAXMIN</span> — javob kelguncha qabul qilingan faraz.</p>
+    </section>
+
+    <!-- 1 -->
+    <section id="maqsad">
+      <h2><span class="n">1</span>Maqsad, muammo va muvaffaqiyat mezonlari</h2>
+      <h3>Muammo</h3>
+      <p class="dim">Tekshiruv natijalari turli bo'linmalarda, turli formatda saqlanadi. Har bir tekshiruv alohida ko'rilganda "toza" yoki "shubhali" bo'lishi mumkin, lekin <b>ikki xodim bitta shubhali shaxs orqali bog'langanini</b> qo'lda aniqlash deyarli imkonsiz. Rahbariyatda kimni birinchi navbatda ko'rib chiqish kerakligi haqida yagona, asoslangan ro'yxat yo'q.</p>
+      <h3>Asosiy vazifalar <span class="mark m-hujjat">HUJJAT §1</span></h3>
+      <ul class="tight">
+        <li>Har bir xodim bo'yicha barcha tekshiruvlarni xronologik tartibda yuritish.</li>
+        <li>Tekshiruvlarda aniqlangan shaxslarni xodim bilan bevosita bog'lash.</li>
+        <li>Xodimlar o'rtasidagi umumiy aloqalarni (2-daraja) avtomatik aniqlash.</li>
+        <li>Har bir xodim uchun 0–100 xavf balini hisoblash va sabablarini ko'rsatish.</li>
+        <li>Rahbariyatga yuqori xavfli xodimlarni birinchi navbatda ko'rib chiqish imkonini berish.</li>
+      </ul>
+      <h3>Muvaffaqiyat mezonlari <span class="mark m-taklif">TAKLIF</span></h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Mezon</th><th>Maqsad</th><th>Qanday o'lchanadi</th></tr></thead>
+        <tbody>
+          <tr><td>Rejali tekshiruv qamrovi</td><td><b>≥ 95%</b> xodimda muddat o'tmagan</td><td>"Tekshiruvlar → Reja" ekrani</td></tr>
+          <tr><td>Aloqalarning manbasi</td><td><b>100%</b> (Faza 1 dan)</td><td>Manbasiz aloqalar soni = 0</td></tr>
+          <tr><td>Signal → xizmat tekshiruvi</td><td><b>≤ 5 ish kuni</b></td><td>Ish: "Yangi" → "Xizmat tekshiruvi" vaqti</td></tr>
+          <tr><td>Umumiy aloqani aniqlash</td><td>qo'lda kunlar → <b>avtomatik, soniyalar</b></td><td>Dvigatel har o'zgarishda qayta hisoblaydi</td></tr>
+          <tr><td>Kirish nazorati</td><td>ruxsatsiz kirish <b>0</b>; har bir kirish auditda</td><td>Audit jurnali, oylik auditor hisoboti</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <!-- 2 -->
+    <section id="skoup">
+      <h2><span class="n">2</span>Skoup va fazalar</h2>
+      <div class="grid g4">
+        <div class="box"><h4>Faza 1 — MVP</h4><p>13 ekran (prototipdagidek), qo'lda kiritish, xavf bali dvigateli, umumiy va bilvosita aloqalar, graf, ishlar, hisobot, RBAC, audit, metodika versiyalari.</p><div class="r">Prototip shu skoupni to'liq ko'rsatadi</div></div>
+        <div class="box"><h4>Faza 2 — Integratsiya</h4><p>Sudlanganlik, qidiruv, kadastr, soliq reyestrlaridan belgilarni avtomatik olish va yangilash. Tashkilot (STIR) obyekti. Vaqt omili. Rus tili.</p><div class="r"><span class="mark m-taklif">TAKLIF</span></div></div>
+        <div class="box"><h4>Faza 3 — Tahlil</h4><p>Klaster va anomaliya tahlili, metodika kalibrlash (amaliyot natijalariga ko'ra — hujjat §9), boshqaruv dashbordlari.</p><div class="r"><span class="mark m-taklif">TAKLIF</span></div></div>
+        <div class="box" style="background:#fff"><h4>Skoupdan tashqarida</h4><p>Tezkor-qidiruv faoliyati, telefon/bank ma'lumotlarini to'g'ridan-to'g'ri tinglash yoki olish, xodimga avtomatik jazo qo'llash. Tizim faqat <b>natijalarni</b> jamlaydi.</p></div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section id="rollar">
+      <h2><span class="n">3</span>Rollar va huquqlar</h2>
+      <p class="lead">Hujjat §9 uchta rolni taklif qilgan (inspektor, rahbar, auditor). Biz <b>administrator</b>ni qo'shdik va uni dosyelardan ajratdik — tizimni boshqargan odam xodimlarning shaxsiy ma'lumotlarini ko'rmasligi kerak.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Huquq</th><th style="text-align:center">Inspektor</th><th style="text-align:center">Rahbar</th><th style="text-align:center">Auditor</th><th style="text-align:center">Administrator</th></tr></thead>
+        <tbody>
+          <tr><td>Xodim profili, tekshiruvlar, aloqalar, graf</td><td align="center"><span class="badge b-amber">bo'linmasi</span></td><td align="center"><span class="badge b-green">✓</span></td><td align="center"><span class="badge b-blue">o'qish</span></td><td align="center">—</td></tr>
+          <tr><td>Tekshiruv, aloqa, shaxs kiritish; belgilarni o'zgartirish</td><td align="center"><span class="badge b-amber">bo'linmasi</span></td><td align="center"><span class="badge b-green">✓</span></td><td align="center">—</td><td align="center">—</td></tr>
+          <tr><td>Xizmat tekshiruvini tayinlash va yopish</td><td align="center">—</td><td align="center"><span class="badge b-green">✓</span></td><td align="center">—</td><td align="center">—</td></tr>
+          <tr><td>Tahliliy hisobot</td><td align="center"><span class="badge b-amber">bo'linmasi</span></td><td align="center"><span class="badge b-green">✓</span></td><td align="center"><span class="badge b-blue">o'qish</span></td><td align="center">—</td></tr>
+          <tr><td>Eksport (JSON / CSV)</td><td align="center">—</td><td align="center"><span class="badge b-green">✓</span></td><td align="center">—</td><td align="center">—</td></tr>
+          <tr><td>Metodika loyihasini tayyorlash</td><td align="center">—</td><td align="center">—</td><td align="center">—</td><td align="center"><span class="badge b-green">✓</span></td></tr>
+          <tr><td>Metodikani tasdiqlash (four-eyes)</td><td align="center">—</td><td align="center"><span class="badge b-green">✓</span></td><td align="center">—</td><td align="center">—</td></tr>
+          <tr><td>Ma'lumotnomalar, foydalanuvchilar va rollar</td><td align="center">—</td><td align="center">—</td><td align="center">—</td><td align="center"><span class="badge b-green">✓</span></td></tr>
+          <tr><td>Audit jurnali (ko'rish / eksport)</td><td align="center">—</td><td align="center"><span class="badge b-blue">ko'rish</span></td><td align="center"><span class="badge b-green">✓</span></td><td align="center">—</td></tr>
+        </tbody></table></div>
+      <h3>Tamoyillar</h3>
+      <ul class="tight">
+        <li><b>Bilish zarurati:</b> inspektor faqat biriktirilgan bo'linmalarni ko'radi. Boshqa bo'linma xodimi "Yopiq xodim" bo'lib qoladi, ammo <b>umumiy aloqa fakti yashirilmaydi</b> — inspektor rahbarga eskalatsiya qiladi.</li>
+        <li><b>Four-eyes:</b> metodikani administrator tayyorlaydi, rahbar tasdiqlaydi; muallif o'z loyihasini tasdiqlay olmaydi.</li>
+        <li><b>Manfaatlar to'qnashuvi</b> <span class="mark m-taklif">TAKLIF</span>: foydalanuvchi o'zi yoki qarindoshi haqidagi yozuvni ko'rmaydi (JShShIR bo'yicha tekshiriladi).</li>
+        <li><b>Har bir kirish qayd etiladi</b> — profilni ochish ham. Audit jurnali faqat qo'shiladi.</li>
+      </ul>
+      <p class="muted" style="font-size:12.5px">Prototipda yuqori o'ngdagi menyudan 4 ta namuna foydalanuvchi o'rtasida almashish mumkin — farq darhol ko'rinadi.</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="ekranlar">
+      <h2><span class="n">4</span>Modullar va ekranlar</h2>
+      <p class="lead">Hujjat §2.1 to'rtta interfeys qismini sanagan (ro'yxat, xodim tarmog'i, umumiy tarmoq, profil). Prototipda ular saqlangan va 9 ta ekran qo'shilgan. Har bir karta prototipdagi tegishli ekranni ochadi.</p>
+      <div class="grid g3">
+        <a class="box" href="prototype/admin-panel.html#/dashboard"><h4>Bosh sahifa <span class="mark m-taklif">YANGI</span></h4><p>KPI, xavf reytingi, "diqqat talab qiladi" signallari, xavf klasterlari, bo'linmalar kesimi.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/xodimlar"><h4>Xodimlar <span class="mark m-hujjat">§2.1</span></h4><p>Ball bo'yicha saralangan ro'yxat; F.I.Sh., tabel, bo'linma, unvon bo'yicha qidiruv; daraja filtri; tekshiruv muddati.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/xodim/e1"><h4>Xodim profili <span class="mark m-hujjat">§2.1</span></h4><p>Ball va uning formulasi, tekshiruvlar xronologiyasi, aloqador shaxslar (manba bilan), umumiy va bilvosita aloqalar, mini-graf, ishlar, tarix.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/graf?mode=xodim&emp=e2"><h4>Aloqalar grafi <span class="mark m-hujjat">§2.1</span></h4><p>Xodim tarmog'i (1–2 daraja), umumiy tarmoq va <b>yo'l topish</b> — ikki tugun orasidagi eng qisqa zanjir.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/aloqalar"><h4>Umumiy aloqalar <span class="mark m-taklif">YANGI</span></h4><p>To'g'ridan-to'g'ri umumiy shaxslar (§7), bilvosita zanjirlar, xavf klasterlari, xizmatdagi aloqalar.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/tekshiruvlar?tab=reja"><h4>Tekshiruvlar <span class="mark m-taklif">YANGI</span></h4><p>Jurnal, rejali muddatlar (chorakda bir — §8; xavfga asoslangan variant) va qamrov matritsasi (xodim × tur).</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/shaxslar"><h4>Aloqador shaxslar <span class="mark m-hujjat">§6</span></h4><p>Reyestr, belgilar va og'irlik, bog'langan xodimlar, manbasiz aloqalar filtri, shaxs kartochkasi, dublikat ogohlantirishi.</p><div class="r">Rahbar, inspektor, auditor</div></a>
+        <a class="box" href="prototype/admin-panel.html#/ishlar"><h4>Xizmat tekshiruvlari <span class="mark m-taklif">YANGI</span></h4><p>Tizim signallari va qo'lda ochilgan ishlar: Yangi → Ko'rib chiqilmoqda → Xizmat tekshiruvi → Yopildi.</p><div class="r">Boshqarish — rahbar</div></a>
+        <a class="box" href="prototype/admin-panel.html#/hisobot"><h4>Tahliliy hisobot <span class="mark m-hujjat">§4–8</span></h4><p>Hujjat tuzilishidagi hisobot joriy ma'lumotlardan avtomatik; chop etish / PDF, JSON, CSV.</p><div class="r">Rahbar; inspektor — o'z bo'linmasi</div></a>
+        <a class="box" href="prototype/admin-panel.html#/metodika"><h4>Xavf metodikasi <span class="mark m-taklif">YANGI</span></h4><p>Og'irlik va koeffitsiyentlar, jonli simulyatsiya, loyiha → tasdiq, versiyalar tarixi.</p><div class="r">Loyiha — admin, tasdiq — rahbar</div></a>
+        <a class="box" href="prototype/admin-panel.html#/malumotnoma"><h4>Ma'lumotnomalar</h4><p>Tekshiruv turlari (8), belgilar, aloqa turlari, darajalar, manbalar, ish holatlari, bo'linmalar.</p><div class="r">Yuritish — administrator</div></a>
+        <a class="box" href="prototype/admin-panel.html#/foydalanuvchilar"><h4>Foydalanuvchilar va rollar</h4><p>Foydalanuvchilar, ko'rish doirasi, huquqlar matritsasi, tamoyillar.</p><div class="r">Administrator</div></a>
+        <a class="box" href="prototype/admin-panel.html#/audit"><h4>Audit jurnali <span class="mark m-hujjat">§9</span></h4><p>Kim, qachon, nima: kiritish, o'zgartirish, profil ko'rish, eksport. Faqat qo'shiladi; filtr va eksport.</p><div class="r">Auditor; rahbar — ko'rish</div></a>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="model">
+      <h2><span class="n">5</span>Ma'lumotlar modeli</h2>
+      <p class="lead">Hujjat §2.2 beshta obyektni bergan. Tahlil davomida 6 ta obyekt qo'shildi (binafsha) — ularsiz hujjatdagi ma'lumotlarning o'zi to'liq ifodalanmaydi (masalan, "hamkasb" aloqasi) yoki tavsiyalarni kuzatib bo'lmaydi (xizmat tekshiruvi).</p>
+      <svg class="erd" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,sans-serif" font-size="12">
+        <g stroke="#8A93A3" stroke-width="1.5" fill="none">
+          <path d="M110,62 V110"/>
+          <path d="M200,165 H300"/><path d="M520,165 H600"/><path d="M820,160 H850"/>
+          <path d="M110,220 V290"/>
+          <path d="M200,315 H700 V220"/>
+          <path d="M410,220 V375 H200" stroke-dasharray="5 4"/>
+          <path d="M820,200 H835 V310 H850"/>
+        </g>
+        <g font-size="10.5" fill="#4B5468">
+          <text x="116" y="90">2 × N : 1</text>
+          <text x="212" y="157">1 : N</text><text x="530" y="157">N : 1</text><text x="822" y="152">N:M</text>
+          <text x="116" y="260">1 : N</text>
+          <text x="440" y="307">aniqlangan shaxslar · N : M</text>
+          <text x="416" y="352">manba (tekshiruv)</text>
+          <text x="760" y="262">rahbar /</text><text x="760" y="275">ta'sischi</text>
+        </g>
+        <!-- Aloqa xodim-xodim -->
+        <rect x="20" y="10" width="180" height="52" rx="9" fill="#F0EBFB" stroke="#6339B8" stroke-width="1.5"/>
+        <text x="32" y="31" font-weight="700" font-size="12.5" fill="#6339B8">Aloqa (xodim–xodim)</text><text x="32" y="50" fill="#4B5468">hamkasb · topilma T-01</text>
+        <!-- Xodim -->
+        <rect x="20" y="110" width="180" height="110" rx="9" fill="#fff" stroke="#2B4C8C" stroke-width="2"/>
+        <text x="34" y="132" font-weight="700" font-size="13.5">Xodim</text>
+        <text x="34" y="152" fill="#4B5468">tabel raqami · F.I.Sh.</text><text x="34" y="168" fill="#4B5468">unvon · lavozim · bo'linma</text><text x="34" y="184" fill="#6339B8">+ JShShIR · holat</text>
+        <!-- Aloqa x-s -->
+        <rect x="300" y="110" width="220" height="110" rx="9" fill="#fff" stroke="#8A93A3" stroke-width="1.5"/>
+        <text x="314" y="132" font-weight="700" font-size="13.5">Aloqa (xodim–shaxs)</text>
+        <text x="314" y="152" fill="#4B5468">aloqa turi (8)</text><text x="314" y="168" fill="#6339B8">+ manba: tekshiruv | kadr |</text><text x="314" y="184" fill="#6339B8">  tezkor | boshqa hujjat</text><text x="314" y="200" fill="#6339B8">+ manba tafsiloti · kiritgan</text>
+        <!-- Shaxs -->
+        <rect x="600" y="110" width="220" height="110" rx="9" fill="#fff" stroke="#A8473B" stroke-width="2"/>
+        <text x="614" y="132" font-weight="700" font-size="13.5">Aloqador shaxs</text>
+        <text x="614" y="152" fill="#4B5468">F.I.Sh. · izoh · belgilar</text><text x="614" y="168" fill="#6339B8">+ JShShIR (dublikatga qarshi)</text><text x="614" y="184" fill="#6339B8">+ laqab · belgi asosi, sanasi</text>
+        <!-- Shaxs-shaxs -->
+        <rect x="850" y="120" width="140" height="80" rx="9" fill="#fff" stroke="#8A93A3" stroke-width="1.5"/>
+        <text x="860" y="142" font-weight="700" font-size="12.5">Aloqa</text><text x="860" y="158" font-weight="700" font-size="12.5">(shaxs–shaxs)</text><text x="860" y="178" fill="#4B5468">2-daraja tarmoq</text>
+        <!-- Tashkilot -->
+        <rect x="850" y="275" width="140" height="80" rx="9" fill="#F0EBFB" stroke="#6339B8" stroke-width="1.5"/>
+        <text x="860" y="297" font-weight="700" font-size="12.5" fill="#6339B8">Tashkilot</text><text x="860" y="316" fill="#4B5468">STIR · nomi</text><text x="860" y="332" fill="#4B5468">topilma T-03</text>
+        <!-- Tekshiruv -->
+        <rect x="20" y="290" width="180" height="115" rx="9" fill="#fff" stroke="#C9A04A" stroke-width="2"/>
+        <text x="34" y="312" font-weight="700" font-size="13.5">Tekshiruv</text>
+        <text x="34" y="332" fill="#4B5468">turi (8) · sana · natija</text><text x="34" y="348" fill="#4B5468">xulosa · aniqlangan shaxslar</text><text x="34" y="364" fill="#6339B8">+ asos (buyruq №)</text><text x="34" y="380" fill="#6339B8">+ o'tkazgan · ilovalar</text>
+        <!-- Ish -->
+        <rect x="20" y="440" width="200" height="90" rx="9" fill="#F0EBFB" stroke="#6339B8" stroke-width="1.5"/>
+        <text x="32" y="462" font-weight="700" font-size="12.5" fill="#6339B8">Ish (xizmat tekshiruvi)</text><text x="32" y="481" fill="#4B5468">xodim(lar) · holat · manba</text><text x="32" y="497" fill="#4B5468">mas'ul · muddat · buyruq</text><text x="32" y="513" fill="#4B5468">natija · xulosa</text>
+        <!-- Foydalanuvchi -->
+        <rect x="300" y="440" width="200" height="70" rx="9" fill="#F0EBFB" stroke="#6339B8" stroke-width="1.5"/>
+        <text x="312" y="462" font-weight="700" font-size="12.5" fill="#6339B8">Foydalanuvchi · Rol</text><text x="312" y="481" fill="#4B5468">ko'rish doirasi (bo'linmalar)</text>
+        <!-- Metodika -->
+        <rect x="600" y="440" width="220" height="70" rx="9" fill="#F0EBFB" stroke="#6339B8" stroke-width="1.5"/>
+        <text x="612" y="462" font-weight="700" font-size="12.5" fill="#6339B8">Metodika versiyasi</text><text x="612" y="481" fill="#4B5468">qiymatlar · muallif · tasdiqlovchi</text>
+        <text x="20" y="552" fill="#4B5468" font-size="11">Oq — hujjatdagi obyektlar (§2.2) · binafsha — qo'shilgan obyekt va maydonlar · Audit yozuvi: har bir o'zgarish va ko'rish — foydalanuvchi, vaqt, amal, obyekt</text>
+      </svg>
+      <div class="tbl" style="margin-top:14px"><table>
+        <thead><tr><th>Obyekt</th><th>Hujjatda</th><th>Qo'shilgan maydonlar / sabab</th></tr></thead>
+        <tbody>
+          <tr><td><b>Xodim</b></td><td><span class="mark m-hujjat">HUJJAT</span> tabel, F.I.Sh., unvon, lavozim, bo'linma</td><td>JShShIR (manfaatlar to'qnashuvi tekshiruvi uchun), holat (xizmatda / bo'shagan)</td></tr>
+          <tr><td><b>Aloqador shaxs</b></td><td><span class="mark m-hujjat">HUJJAT</span> F.I.Sh., izoh, belgilar</td><td>JShShIR va laqab — dublikatga qarshi (T-11); izoh ismdan ajratildi (T-13); belgi asosi va sanasi (T-09)</td></tr>
+          <tr><td><b>Tekshiruv</b></td><td><span class="mark m-hujjat">HUJJAT</span> turi, sana, natija, xulosa, aniqlangan shaxslar</td><td>Asos (buyruq raqami) — majburiy; o'tkazgan xodim; ilovalar (T-12)</td></tr>
+          <tr><td><b>Aloqa (xodim–shaxs)</b></td><td><span class="mark m-hujjat">HUJJAT</span> aloqa turi</td><td>Manba va uning tafsiloti — ballga ta'sir qiladigan har bir aloqa tekshirilishi kerak (T-04)</td></tr>
+          <tr><td><b>Aloqa (shaxs–shaxs)</b></td><td><span class="mark m-hujjat">HUJJAT</span> aloqa turi</td><td>—</td></tr>
+          <tr><td><b>Aloqa (xodim–xodim)</b></td><td>yo'q</td><td>Hujjatda "Xizmatdagi aloqa: hamkasb" bor, modelda yo'q edi (T-01)</td></tr>
+          <tr><td><b>Tashkilot</b></td><td>yo'q</td><td>"Avto-Lizing Servis" MChJ va uning rahbari bitta tugunga birlashtirilgan (T-03). Faza 1 da ajratiladi</td></tr>
+          <tr><td><b>Ish</b></td><td>yo'q</td><td>§8 tavsiyalari ("xizmat tekshiruvi tayinlash") qayerda kuzatilishi aniqlanmagan (T-12)</td></tr>
+          <tr><td><b>Metodika versiyasi</b></td><td>yo'q</td><td>§9 "koeffitsiyentlarni muntazam qayta ko'rib chiqish" — qaysi ball qaysi qoida bilan hisoblanganini isbotlash uchun</td></tr>
+          <tr><td><b>Foydalanuvchi, Audit</b></td><td><span class="mark m-hujjat">§9</span> faqat taklif sifatida</td><td>Rollar, ko'rish doirasi; append-only jurnal</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <!-- 6 -->
+    <section id="metodika">
+      <h2><span class="n">6</span>Xavf bali metodikasi</h2>
+      <p class="lead">Ball uch manbadan yig'iladi va <span id="m-cap"></span> bilan cheklanadi. Quyidagi jadvallar <code>data/seed.js</code> dan jonli o'qiladi — prototip va tekshiruv skripti bilan bir xil manba.</p>
+      <div class="callout info"><span>ƒ</span><div class="mono" style="font-size:13px"><b>ball</b> = min( cap, Σ natija_ballari + Σ<sub>shaxs</sub> round(eng_og'ir_belgi × aloqa_koeffitsiyenti) + umumiy_shaxslar_soni × bonus )</div></div>
+      <div class="grid g3" id="m-tables"></div>
+      <h3>Darajalar</h3>
+      <div class="tbl"><table id="m-levels"></table></div>
+      <h3>Hujjat bilan solishtirish — dvigatel natijasi</h3>
+      <p class="dim" style="margin-top:0">Har bir xodimning bali va uning tarkibi hujjatdagi qiymatlar bilan taqqoslanadi (<code>node tools/verify.mjs</code> xuddi shu tekshiruvni bajaradi).</p>
+      <div class="tbl"><table id="m-verify"></table></div>
+      <h3>Hisoblash namunasi — Tursunov J.O.</h3>
+      <div class="tbl"><table id="m-example"></table></div>
+      <h3>Aniqlangan qoidalar <span class="mark m-taxmin">TAXMIN</span></h3>
+      <ul class="tight">
+        <li><b>Yaxlitlash</b> — har bir shaxs hissasi alohida, yarmi yuqoriga: 32.5 → 33, 24.5 → 25, 17.5 → 18 (hujjatdagi qiymatlar shunga mos). Dasturchilar uchun: <code>35 × 0.7</code> kompyuterda <code>24.499999…</code> beradi — oddiy <code>Math.round</code> 24 qaytaradi. Dvigatelda bu himoyalangan (T-05).</li>
+        <li><b>Bitta shaxs — bitta hissa:</b> shaxs xodimga bir nechta aloqa turi bilan bog'lansa, eng katta hissa olinadi.</li>
+        <li><b>Umumiy aloqa chegarasi</b> belgining sof og'irligi bilan solishtiriladi (koeffitsiyentdan oldin). Hujjatdagi natijalar ikkala talqinda ham bir xil chiqadi, shuning uchun bu ochiq savol (Q-08).</li>
+        <li><b>Xom ball saqlanadi</b> — 100 dan oshgan xodimlarni farqlash va saralash uchun (T-08).</li>
+      </ul>
+    </section>
+
+    <!-- 7 -->
+    <section id="jarayon">
+      <h2><span class="n">7</span>Jarayonlar</h2>
+      <h3>Asosiy oqim: ma'lumotdan qarorgacha</h3>
+      <div class="flow">
+        <div class="st"><span class="who">Inspektor</span><b>1. Kiritish</b><span>Tekshiruv / aloqa / belgi. Asos va manba majburiy.</span></div>
+        <div class="st"><span class="who">Tizim</span><b>2. Qayta hisoblash</b><span>Ball, daraja, umumiy va bilvosita aloqalar — darhol.</span></div>
+        <div class="st"><span class="who">Tizim</span><b>3. Signal</b><span>Daraja "Yuqori"ga ko'tarilsa — ish ochiladi, bildirishnoma.</span></div>
+        <div class="st"><span class="who">Rahbar</span><b>4. Ko'rib chiqish</b><span>Graf, ball tarkibi, manbalar tahlili.</span></div>
+        <div class="st"><span class="who">Rahbar</span><b>5. Xizmat tekshiruvi</b><span>Buyruq, mas'ul, muddat (30 kun — TAXMIN).</span></div>
+        <div class="st"><span class="who">Rahbar</span><b>6. Qaror</b><span>4 natijadan biri + xulosa.</span></div>
+      </div>
+      <p class="muted" style="font-size:12.5px;margin-top:0">Har bir qadam audit jurnaliga yoziladi. Ish yopilishi ballni avtomatik o'zgartirmaydi — yangi faktlar tekshiruv sifatida kiritiladi.</p>
+      <div class="grid g2">
+        <div>
+          <h3>Ish holatlari</h3>
+          <div class="tbl"><table>
+            <thead><tr><th>Holat</th><th>Kim o'tkazadi</th><th>Keyingi</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge b-blue">Yangi</span></td><td>Tizim signali yoki rahbar</td><td>Ko'rib chiqilmoqda</td></tr>
+              <tr><td><span class="badge b-amber">Ko'rib chiqilmoqda</span></td><td>Rahbar</td><td>Xizmat tekshiruvi · yoki Yopildi (asos yo'q / profilaktika)</td></tr>
+              <tr><td><span class="badge b-purple">Xizmat tekshiruvi</span></td><td>Rahbar (buyruq, mas'ul, muddat)</td><td>Yopildi</td></tr>
+              <tr><td><span class="badge b-green">Yopildi</span></td><td>Rahbar</td><td>Natija: tasdiqlanmadi · profilaktik suhbat · intizomiy jazo · huquqni muhofaza organlariga</td></tr>
+            </tbody></table></div>
+        </div>
+        <div>
+          <h3>Metodikani o'zgartirish (four-eyes)</h3>
+          <div class="flow" style="flex-direction:column">
+            <div class="st" style="margin-right:0"><span class="who">Administrator</span><b>Loyiha</b><span>Qiymatlarni o'zgartiradi, simulyatsiyada ta'sirni ko'radi (faqat jamlangan taqsimot — ismlarsiz).</span></div>
+            <div class="st" style="margin-right:0"><span class="who">Rahbar</span><b>Tasdiq yoki rad</b><span>Xodimlar kesimidagi farqni ko'radi. Muallif o'zi tasdiqlay olmaydi.</span></div>
+            <div class="st" style="margin-right:0"><span class="who">Tizim</span><b>Yangi versiya</b><span>Barcha ballar qayta hisoblanadi, darajasi oshganlar uchun signal, versiya tarixi.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section id="topilmalar">
+      <h2><span class="n">8</span>Hujjat tahlili: topilmalar</h2>
+      <p class="lead">Hujjatdagi barcha raqamlar qayta hisoblandi: <b>jami ko'rsatkichlar (6 / 14 / 14), 6 ta ball va ularning tarkibi to'g'ri</b>. Quyida mantiqiy kamchiliklar, ziddiyatlar va yashirin natijalar.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>№</th><th>Topilma</th><th>Ta'siri</th><th>Nima qildik</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">T-07</td><td><b>Bilvosita aloqalar ballga va tavsiyalarga kirmaydi.</b> Ergashev → Mirzayev / Usmonov → Sobirov → Tursunov, Karimov. Nazarova → Yo'ldoshev → Qodirov ("Avto-Lizing") → Tursunov, Xolmatov. §1 2-daraja aloqalarni maqsad qilgan, §3 esa faqat to'g'ridan-to'g'ri umumiy shaxsni hisoblaydi.</td><td><span class="badge b-red">yuqori</span> §8 da ikki xodim klasterlardan tushib qolgan</td><td>"Bilvosita aloqalar", "Xavf klasterlari", "Yo'l topish" qo'shildi; hisobot tavsiyalariga kiritildi. Ball — Q-06</td></tr>
+          <tr><td class="mono">T-04</td><td><b>Manbasiz aloqalar ballga ta'sir qiladi:</b> Tursunov — Sobirov "do'st" (+28), Ergashev — Usmonov "tanish" (+10). Ular hech qaysi tekshiruvda aniqlanmagan.</td><td><span class="badge b-red">yuqori</span> 38 ball tekshirib bo'lmaydigan asosda</td><td>Har bir aloqada "manba" maydoni; manbasiz aloqalar ogohlantirish bilan; yangi aloqada manba majburiy. Q-05</td></tr>
+          <tr><td class="mono">T-10</td><td><b>Chegaradagi holat:</b> Xolmatov (Podpolkovnik) — 55, "O'rta". U yuqori xavfli xodim bilan umumiy korrupsiya aloqasiga ega va MChJda bilvosita ulushi bor. Bir ball farq bilan "Yuqori" emas.</td><td><span class="badge b-amber">o'rta</span></td><td>K-004 ishi (umumiy shaxs) uni qamrab oladi. Eskalatsiya qoidasi — Q-10</td></tr>
+          <tr><td class="mono">T-01</td><td><b>Xodim–xodim aloqasi modelda yo'q.</b> "Xizmatdagi aloqa: hamkasb" (Tursunov — Xolmatov) bor, "Hamkasb" koeffitsiyenti (0.4) ham bor, lekin xodimda belgi bo'lmagani uchun u hech qachon ishlamaydi.</td><td><span class="badge b-amber">o'rta</span></td><td>"Aloqa (xodim–xodim)" obyekti; koeffitsiyent maqsadi — Q-07</td></tr>
+          <tr><td class="mono">T-03</td><td><b>Tashkilot va shaxs bitta tugunda:</b> '"Avto-Lizing Servis" MChJ rahbari Qodirov Anvar'. Rahbar almashsa yoki tashkilot boshqa xodim bilan bog'lansa, aloqa yo'qoladi.</td><td><span class="badge b-amber">o'rta</span></td><td>Faza 1: Tashkilot (STIR) alohida obyekt</td></tr>
+          <tr><td class="mono">T-11</td><td><b>Identifikator yo'q</b> (JShShIR / STIR). "Sobirov Ilhom" va "Ilhom aka" ikki xil yozilsa — ikki shaxs, umumiy aloqa ko'rinmaydi.</td><td><span class="badge b-amber">o'rta</span></td><td>JShShIR maydoni; o'xshash ism ogohlantirishi</td></tr>
+          <tr><td class="mono">T-09</td><td><b>Vaqt omili yo'q.</b> 2 yil oldingi "shubhali" natija bugungi bilan teng; "Qidiruvda" belgisi o'zgarishi mumkin, lekin tasdiqlangan sanasi saqlanmaydi.</td><td><span class="badge b-amber">o'rta</span></td><td>Belgi asosi va sanasi; eskirish qoidasi — Q-09</td></tr>
+          <tr><td class="mono">T-12</td><td><b>Tekshiruvning huquqiy asosi va ijrochisi yo'q;</b> §8 tavsiyalari ("xizmat tekshiruvi tayinlash") qayerda kuzatilishi aniqlanmagan.</td><td><span class="badge b-amber">o'rta</span></td><td>Asos majburiy; "Xizmat tekshiruvlari" moduli</td></tr>
+          <tr><td class="mono">T-08</td><td><b>100 bilan cheklash farqni yo'qotadi:</b> Tursunovning xom bali 149. Ikki xodim 100 bo'lsa, kim xavfliroq — ko'rinmaydi.</td><td><span class="badge b-gray">past</span></td><td>Xom ball saqlanadi va saralashda ishlatiladi</td></tr>
+          <tr><td class="mono">T-05</td><td><b>Yaxlitlash qoidasi yozilmagan;</b> float xatosi (35 × 0.7 = 24.4999…) noto'g'ri ball beradi.</td><td><span class="badge b-gray">past</span></td><td>Qoida yozildi, dvigatelda himoya, avtomatik test</td></tr>
+          <tr><td class="mono">T-06</td><td><b>"Og'irligi 20 va undan yuqori"</b> — sof og'irlikmi yoki koeffitsiyentdan keyinmi, aniq emas.</td><td><span class="badge b-gray">past</span></td><td>Sof og'irlik (TAXMIN); Q-08</td></tr>
+          <tr><td class="mono">T-02</td><td><b>Tekshiruv turlari:</b> §1 da 7 ta sanalgan, ma'lumotlarda 8-tur — "Qarindoshlar tekshiruvi" bor.</td><td><span class="badge b-gray">past</span></td><td>Katalogga qo'shildi</td></tr>
+          <tr><td class="mono">T-13</td><td><b>Format:</b> hujjatda sana DD.MM.YYYY, prototip skrinshotida YYYY-MM-DD; izoh ism ichida yozilgan ("Karimov Baxtiyor (otasi)").</td><td><span class="badge b-gray">past</span></td><td>Yagona DD.MM.YYYY; izoh — alohida maydon</td></tr>
+        </tbody></table></div>
+      <h3>Bilvosita aloqalar — dvigatel natijasi</h3>
+      <div class="tbl"><table id="t-indirect"></table></div>
+    </section>
+
+    <!-- 9 -->
+    <section id="savollar">
+      <h2><span class="n">9</span>Ochiq savollar</h2>
+      <p class="lead">Javob kelguncha har biri uchun taxmin qabul qilindi va prototip shunga qurildi. Javob kelganda — taxmin, prototip va shu sahifa birga yangilanadi.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>№</th><th>Savol</th><th>Nega muhim</th><th>Taxmin</th><th>Kim javob beradi</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Q-01</td><td>Tizim egasi qaysi tarkibiy bo'linma? Nechta foydalanuvchi, hududiy bo'linmalar ham ishlaydimi?</td><td>Rollar, ko'rish doirasi</td><td>Markaziy apparat + hududlar; 4 rol</td><td>Buyurtmachi</td></tr>
+          <tr><td class="mono">Q-02</td><td>Tizim yopiq idoraviy tarmoqda (internetsiz) ishlaydimi?</td><td>Arxitektura, o'rnatish</td><td>Ha — prototip tashqi bog'liqliksiz</td><td>IT / xavfsizlik</td></tr>
+          <tr><td class="mono">Q-03</td><td>Hajm: nechta xodim, yiliga nechta tekshiruv va aloqa?</td><td>Graf tezligi, saqlash</td><td>10–60 ming xodim; umumiy tarmoq filtr bilan</td><td>Buyurtmachi</td></tr>
+          <tr><td class="mono">Q-04</td><td>Qarindoshlar, ijtimoiy tarmoq, telefon ma'lumotlarini qayta ishlashning huquqiy asosi (idoraviy nizom, buyruq)? Xodimdan yozma rozilik olinadimi?</td><td>Qonuniylik — loyiha boshlanishi sharti</td><td>Idoraviy nizom bilan; rozilik xizmatga kirishda</td><td>Yuristlar</td></tr>
+          <tr><td class="mono">Q-05</td><td>Manbasiz aloqalar ballga kiradimi? (T-04)</td><td>38 ball tekshirib bo'lmaydi</td><td>Kiradi, ogohlantirish bilan; Faza 1 dan manba majburiy</td><td>Metodolog</td></tr>
+          <tr><td class="mono">Q-06</td><td>Bilvosita aloqalar ballga ta'sir qilsinmi? (T-07)</td><td>Ergashev, Nazarova bahosi</td><td>Hozircha yo'q — signal. Taklif: +5 har bir yangi juftlik</td><td>Metodolog</td></tr>
+          <tr><td class="mono">Q-07</td><td>"Hamkasb" koeffitsiyenti qachon ishlaydi? (T-01)</td><td>Metodika to'liqligi</td><td>Sobiq xodim shaxs sifatida (belgilar bilan) bo'lganda</td><td>Metodolog</td></tr>
+          <tr><td class="mono">Q-08</td><td>Umumiy aloqa chegarasi (20) — sof og'irlikmi? (T-06)</td><td>Chegaradagi holatlar</td><td>Sof og'irlik</td><td>Metodolog</td></tr>
+          <tr><td class="mono">Q-09</td><td>Vaqt omili: eski natija va belgilar eskiradimi? (T-09)</td><td>Adolatli baho</td><td>Faza 2: 24 oydan keyin 50%</td><td>Metodolog</td></tr>
+          <tr><td class="mono">Q-10</td><td>Yuqori xavfli xodim bilan umumiy xavfli shaxsi bor xodim avtomatik eskalatsiya qilinsinmi? (T-10)</td><td>Xolmatov holati</td><td>Ha — "ko'rib chiqish" ishi ochiladi (K-004 kabi)</td><td>Buyurtmachi</td></tr>
+          <tr><td class="mono">Q-11</td><td>Rejali tekshiruv davriyligi: hamma uchun 90 kunmi yoki xavfga asoslangan (30 / 60 / 90)?</td><td>Inspektor yuklamasi</td><td>90 kun (hujjat §8); xavfga asoslangan — taklif, prototipda almashtirgich</td><td>Buyurtmachi</td></tr>
+          <tr><td class="mono">Q-12</td><td>Xizmat tekshiruvi: muddat, kim tayinlaydi, natija turlari; tizim ichida yuritiladimi?</td><td>"Ishlar" moduli</td><td>Tizimda; 30 kun; 4 natija</td><td>Buyurtmachi, yuristlar</td></tr>
+          <tr><td class="mono">Q-13</td><td>Ma'lumotlarni saqlash muddati; xodim ishdan bo'shaganda nima bo'ladi?</td><td>Shaxsga doir ma'lumotlar talablari</td><td>5 yil arxiv, keyin o'chirish / anonimlashtirish</td><td>Yuristlar</td></tr>
+          <tr><td class="mono">Q-14</td><td>Integratsiyalar: qaysi reyestrlar (sudlanganlik, qidiruv, kadastr, soliq, bank) va qaysi fazada?</td><td>Faza 2 rejasi</td><td>Faza 1 — qo'lda; Faza 2 — integratsiya</td><td>IT, egalari</td></tr>
+          <tr><td class="mono">Q-15</td><td>Xodimga natija bildiriladimi, tushuntirish berish huquqi qanday ta'minlanadi?</td><td>Adolat, huquqiy xavf</td><td>Faqat xizmat tekshiruvi doirasida</td><td>Yuristlar</td></tr>
+          <tr><td class="mono">Q-16</td><td>Interfeys tili: faqat o'zbek (lotin) yoki rus / kirill ham kerakmi?</td><td>Lokalizatsiya</td><td>O'zbek lotin; rus — Faza 2</td><td>Buyurtmachi</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <!-- 10 -->
+    <section id="takliflar">
+      <h2><span class="n">10</span>Takliflar — hujjatdan tashqari</h2>
+      <div class="grid g2">
+        <div class="box"><h4>Yo'l topish va bilvosita aloqalar</h4><p>Ikki xodim yoki shaxs orasidagi eng qisqa zanjir. Hujjatning o'zidagi ma'lumotlardan 4 ta yangi juftlik topildi.</p></div>
+        <div class="box"><h4>Xavf klasterlari</h4><p>Umumiy xavfli shaxs atrofidagi barcha xodimlar — to'g'ridan-to'g'ri va bilvosita. Birgalikda tahlil (§8) uchun tayyor ro'yxat.</p></div>
+        <div class="box"><h4>Manba majburiyligi</h4><p>Ballga ta'sir qiladigan har bir aloqa — tekshiruv, kadr ma'lumoti yoki hujjat bilan. Manbasiz aloqa darhol ko'rinadi.</p></div>
+        <div class="box"><h4>Qamrov matritsasi va reja</h4><p>Kimda qaysi tekshiruv o'tkazilmagan, kimning muddati o'tgan; xavfga asoslangan davriylik (yuqori — 30 kun).</p></div>
+        <div class="box"><h4>Ball o'zgarishini oldindan ko'rish</h4><p>Tekshiruv yoki aloqa kiritishda "49 → 99, O'rta → Yuqori" saqlashdan oldin ko'rinadi.</p></div>
+        <div class="box"><h4>Metodika versiyalari va simulyatsiya</h4><p>Koeffitsiyent o'zgarishi kimga qanday ta'sir qilishi tasdiqdan oldin ko'rinadi; har bir ball qaysi versiya bilan hisoblangani isbotlanadi.</p></div>
+        <div class="box"><h4>Avtomatik signal → ish</h4><p>Daraja "Yuqori"ga ko'tarilganda ish avtomatik ochiladi — tavsiya qog'ozda qolib ketmaydi.</p></div>
+        <div class="box"><h4>Bitta dvigatel, avtomatik test</h4><p>Prototip, shu sahifa va <code>tools/verify.mjs</code> bitta <code>src/engine.js</code> dan foydalanadi — metodika o'zgarsa, hujjat bilan farq darhol ko'rinadi.</p></div>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section id="nft">
+      <h2><span class="n">11</span>Xavfsizlik, huquqiy va nofunksional talablar</h2>
+      <div class="grid g2">
+        <div>
+          <h3>Huquqiy</h3>
+          <ul class="tight">
+            <li>"Shaxsga doir ma'lumotlar to'g'risida"gi Qonun (O'RQ-547, 2019) talablariga muvofiqlik, jumladan O'zbekiston fuqarolarining shaxsga doir ma'lumotlarini <b>respublika hududidagi serverlarda</b> saqlash. <span class="muted">Aniq moddalar yuristlar bilan tasdiqlanadi (Q-04).</span></li>
+            <li>Har bir tekshiruv turi uchun huquqiy asos (idoraviy nizom / buyruq) — tekshiruvda "asos" maydoni majburiy.</li>
+            <li>Maqsad cheklovi: ma'lumotlar faqat xizmat faoliyatini nazorat qilish uchun.</li>
+            <li>Saqlash muddati va o'chirish tartibi (Q-13).</li>
+          </ul>
+          <h3>Xavfsizlik</h3>
+          <ul class="tight">
+            <li>Yopiq idoraviy tarmoq, on-prem; tashqi CDN va xizmatlarsiz.</li>
+            <li>Idoraviy domen (AD/LDAP) + ikki bosqichli autentifikatsiya; sessiya 15 daqiqa harakatsizlikda yopiladi.</li>
+            <li>Shifrlash: uzatishda TLS 1.2+, saqlashda disk/ustun darajasida.</li>
+            <li>Audit: append-only, alohida saqlash, ko'rish ham qayd etiladi; oylik auditor ko'rigi.</li>
+            <li>Eksport faqat rahbar, har bir eksport auditda; hisobotda "Xizmat foydalanishi uchun" belgisi.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Nofunksional <span class="mark m-taxmin">TAXMIN</span></h3>
+          <div class="tbl"><table>
+            <tbody>
+              <tr><td>Ball qayta hisoblash</td><td>bitta xodim — &lt; 200 ms; butun baza (60 ming) — &lt; 5 daqiqa (fon)</td></tr>
+              <tr><td>Graf</td><td>xodim tarmog'i — &lt; 1 s; umumiy tarmoq — filtr bilan ≤ 2 000 tugun</td></tr>
+              <tr><td>Mavjudlik</td><td>ish vaqtida 99.5%</td></tr>
+              <tr><td>Zaxira nusxa</td><td>kunlik; RPO 24 soat, RTO 4 soat</td></tr>
+              <tr><td>Audit saqlash</td><td>kamida 5 yil</td></tr>
+              <tr><td>Brauzer</td><td>Chromium / Firefox oxirgi 2 versiya; 1280 px dan</td></tr>
+              <tr><td>Til</td><td>o'zbek (lotin); rus — Faza 2</td></tr>
+            </tbody></table></div>
+          <div class="callout ok"><span>✓</span><div>Prototip shu talablarning bir qismini allaqachon ko'rsatadi: tashqi bog'liqliksiz ishlaydi, rollar va ko'rish doirasi, profil ko'rish auditi, four-eyes.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section id="arxitektura">
+      <h2><span class="n">12</span>Arxitektura taklifi <span class="mark m-taklif">TAKLIF</span></h2>
+      <div class="grid g3">
+        <div class="box"><h4>Veb-interfeys</h4><p>SPA (prototip ekranlari asosida). Graf — Faza 1 da kutubxona bilan (masalan, Cytoscape.js) yoki prototipdagi SVG komponent.</p></div>
+        <div class="box"><h4>API va dvigatel</h4><p>REST API; xavf bali dvigateli — <code>src/engine.js</code> mantiqining server versiyasi, xuddi shu test to'plami bilan.</p></div>
+        <div class="box"><h4>Ma'lumotlar bazasi</h4><p>PostgreSQL: aloqalar jadvallari + rekursiv so'rovlar (2–3 daraja). Hajm katta bo'lsa — grafik baza (Neo4j) o'qish uchun nusxa.</p></div>
+        <div class="box"><h4>Integratsiya adapterlari</h4><p>Reyestrlar uchun alohida adapterlar, navbat orqali; har bir olingan belgi — manba va sana bilan (Faza 2).</p></div>
+        <div class="box"><h4>IAM va audit</h4><p>AD/LDAP + 2FA, rol va bo'linma doirasi serverda tekshiriladi. Audit — alohida, faqat qo'shiladigan saqlash.</p></div>
+        <div class="box"><h4>Hisobotlar</h4><p>Serverda PDF (shtamp, sana, metodika versiyasi), eksport audit bilan.</p></div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section id="yol">
+      <h2><span class="n">13</span>Yo'l xaritasi <span class="mark m-taxmin">TAXMIN</span></h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Faza</th><th>Davomiylik</th><th>Natija</th><th>Chiqish sharti</th></tr></thead>
+        <tbody>
+          <tr><td><b>0. Discovery</b></td><td>2 hafta</td><td>Ochiq savollarga javob, huquqiy asos, metodika v1.0 tasdig'i, prototip ko'rigi</td><td>Q-04, Q-05, Q-06, Q-12 yopilgan</td></tr>
+          <tr><td><b>1. MVP</b></td><td>10–12 hafta</td><td>13 ekran, qo'lda kiritish, dvigatel, RBAC, audit, hisobot, on-prem o'rnatish</td><td>Bitta hududda pilot, xavfsizlik sinovi</td></tr>
+          <tr><td><b>1b. Pilot</b></td><td>4–6 hafta</td><td>Haqiqiy ma'lumotlar, foydalanuvchi fikrlari, metodika kalibrlash</td><td>Muvaffaqiyat mezonlari (§1) bajarilgan</td></tr>
+          <tr><td><b>2. Integratsiya</b></td><td>8–10 hafta</td><td>Reyestrlar, Tashkilot (STIR), vaqt omili, rus tili</td><td>Belgilar avtomatik yangilanadi</td></tr>
+          <tr><td><b>3. Kengaytirilgan tahlil</b></td><td>davomiy</td><td>Klaster va anomaliya tahlili, metodikani muntazam qayta ko'rish (§9)</td><td>—</td></tr>
+        </tbody></table></div>
+    </section>
+
+    <!-- 14 -->
+    <section id="repo">
+      <h2><span class="n">14</span>Repozitoriy tuzilishi</h2>
+<pre class="tree"><b>xodim-aloqalar-xaritasi/</b>
+├─ <b>index.html</b>              <i>Loyiha tuzilishi — shu sahifa</i>
+├─ <b>prototype/</b>
+│  ├─ admin-panel.html     <i>Nazorat paneli: 13 ekran, dizayn tizimi (Garant panellari bilan bir xil)</i>
+│  ├─ app.js               <i>Ekranlar, rollar, formalar, ishlar, metodika, audit</i>
+│  └─ graph.js             <i>SVG graf: force layout, zoom, sudrash, yo'lni ajratish (kutubxonasiz)</i>
+├─ <b>src/</b>
+│  └─ engine.js            <i>Xavf bali dvigateli: ball, umumiy / bilvosita aloqa, klaster, yo'l topish</i>
+├─ <b>data/</b>
+│  └─ seed.js              <i>Namuna ma'lumotlar (hujjatdan), kataloglar, metodika v1.0, kutilgan natijalar</i>
+├─ <b>tools/</b>
+│  ├─ verify.mjs           <i>Hujjatdagi ballarni qayta hisoblab tekshiradi:  node tools/verify.mjs</i>
+│  └─ serve.mjs            <i>Lokal statik server:  node tools/serve.mjs</i>
+├─ README.md
+└─ CHANGELOG.md</pre>
+      <p class="dim" style="margin-bottom:0">Hamma narsa brauzerda to'g'ridan-to'g'ri ochiladi (<code>file://</code>) — o'rnatish, internet yoki build kerak emas. Holat brauzer xotirasida saqlanadi; panelda "Demo ma'lumotlarni tiklash" boshlang'ich holatga qaytaradi.</p>
+    </section>
+
+    <!-- 15 -->
+    <section id="lugat">
+      <h2><span class="n">15</span>Lug'at</h2>
+      <div class="kv">
+        <div class="k">Xavf bali</div><div>0–100 (cheklangan) son; ko'rib chiqish navbatini belgilaydi, qaror emas.</div>
+        <div class="k">Xom ball</div><div>Cheklashdan oldingi yig'indi (Tursunov — 149).</div>
+        <div class="k">Belgi</div><div>Aloqador shaxs haqidagi salbiy fakt (sudlangan, qidiruvda, …) va uning og'irligi.</div>
+        <div class="k">Koeffitsiyent</div><div>Aloqa turi qanchalik yaqinligini bildiradi (bank o'tkazmasi 1.3 … hamkasb 0.4).</div>
+        <div class="k">Umumiy shaxs</div><div>Bir vaqtda ikki va undan ortiq xodim bilan to'g'ridan-to'g'ri bog'langan shaxs.</div>
+        <div class="k">Bilvosita aloqa</div><div>Xodim → shaxs → shaxs → xodim zanjiri (ballga kirmaydi, signal).</div>
+        <div class="k">Klaster</div><div>Umumiy xavfli shaxs atrofidagi xodimlar guruhi.</div>
+        <div class="k">Ish</div><div>Signal yoki rahbar qarori bilan ochilgan ko'rib chiqish / xizmat tekshiruvi kartochkasi.</div>
+        <div class="k">Four-eyes</div><div>O'zgarishni bir kishi tayyorlaydi, boshqasi tasdiqlaydi.</div>
+        <div class="k">JShShIR / STIR</div><div>Jismoniy shaxsning shaxsiy identifikatsiya raqami / soliq to'lovchining identifikatsiya raqami.</div>
+      </div>
+    </section>
+  </main>
+</div>
+<footer>Xodim Aloqalar Xaritasi · loyiha tuzilishi v0.1 · barcha shaxslar, ismlar va hodisalar to'qima</footer>
+
+<script src="data/seed.js"></script>
+<script src="src/engine.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.XAX_SEED, EN = window.XAX_ENGINE, m = S.methodology, cat = S.catalog;
+  var R = EN.compute(S);
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
+  function tbl(title, head, rows) {
+    return '<div><h3 style="margin-top:6px">' + title + '</h3><div class="tbl"><table><thead><tr>' + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>" + rows.map(function (r) { return "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div></div>";
+  }
+  document.getElementById("m-cap").textContent = m.cap;
+  document.getElementById("m-tables").innerHTML =
+    tbl("3.1 Tekshiruv natijasi", ["Natija", "Ball"], Object.keys(cat.results).map(function (k) { return [cat.results[k], '<b class="mono">+' + m.resultPoints[k] + "</b>"]; })) +
+    tbl("3.2 Shaxs belgisi", ["Belgi", "Og'irlik"], Object.keys(cat.flags).map(function (k) { return [esc(cat.flags[k]), '<b class="mono">' + m.flagWeights[k] + "</b>"]; })) +
+    tbl("Aloqa turi", ["Aloqa", "Koef."], Object.keys(cat.linkTypes).map(function (k) { return [esc(cat.linkTypes[k]), '<b class="mono">' + m.linkCoef[k] + "</b>"]; })) +
+    '<div class="box" style="grid-column:1/-1"><b>3.3 Umumiy aloqalar:</b> og\'irligi ' + m.sharedMinWeight + " va undan yuqori shaxs boshqa xodim bilan ham bog'langan bo'lsa — har biri uchun <b>+" + m.sharedBonus + "</b> ball.</div>";
+  var lv = m.levels;
+  document.getElementById("m-levels").innerHTML = "<thead><tr><th>Daraja</th><th>Oraliq</th><th>Tavsiya</th><th>Xodimlar (namuna)</th></tr></thead><tbody>" + ["past", "orta", "yuqori"].map(function (l) {
+    var rng = l === "past" ? "0–" + (lv.orta - 1) : l === "orta" ? lv.orta + "–" + (lv.yuqori - 1) : lv.yuqori + "–" + m.cap;
+    var cls = l === "yuqori" ? "b-red" : l === "orta" ? "b-amber" : "b-green";
+    return '<tr><td><span class="badge ' + cls + '">' + cat.levels[l] + '</span></td><td class="mono">' + rng + "</td><td>" + esc(cat.levelAdvice[l]) + '</td><td class="mono">' + R.counts[l] + "</td></tr>";
+  }).join("") + "</tbody>";
+
+  var ok = 0;
+  document.getElementById("m-verify").innerHTML = "<thead><tr><th>Xodim</th><th>Hujjatda</th><th>Dvigatel</th><th>Xom</th><th>Tarkib</th><th>Natija</th></tr></thead><tbody>" + S.employees.map(function (e) {
+    var s = R.byEmp[e.id], exp = S.expected.scores[e.id], pts = s.parts.map(function (p) { return p.pts; });
+    var same = s.score === exp && JSON.stringify(pts) === JSON.stringify(S.expected.parts[e.id]);
+    if (same) ok++;
+    return "<tr><td>" + esc(e.fio) + '</td><td class="mono">' + exp + '</td><td class="mono"><b>' + s.score + '</b></td><td class="mono">' + s.raw + '</td><td class="mono" style="font-size:12px">' + (pts.length ? pts.map(function (p) { return "+" + p; }).join(" ") : "—") + "</td><td>" + (same ? '<span class="ok">✓ mos</span>' : '<span class="bad">✗ farq</span>') + "</td></tr>";
+  }).join("") + "</tbody>";
+  document.getElementById("st-ok").textContent = ok + "/" + S.employees.length;
+
+  var t = R.byEmp.e1;
+  document.getElementById("m-example").innerHTML = "<thead><tr><th>Omil</th><th>Hisob</th><th>Ball</th></tr></thead><tbody>" + t.parts.map(function (p) {
+    var calc = p.kind === "check" ? "natija bali" : p.kind === "person" ? p.w + " × " + p.coef + " = " + Math.round(p.w * p.coef * 100) / 100 + (p.unsourced ? ' <span class="badge b-amber">manba yo\'q</span>' : "") : p.refs.length + " × " + m.sharedBonus;
+    return "<tr><td>" + esc(p.label) + '</td><td class="mono" style="font-size:12px">' + calc + '</td><td class="mono"><b>+' + p.pts + "</b></td></tr>";
+  }).join("") + '<tr><td><b>Jami</b></td><td class="mono">xom ' + t.raw + " → min(" + m.cap + ", " + t.raw + ')</td><td class="mono"><b>' + t.score + "</b></td></tr></tbody>";
+
+  var E = function (id) { return S.employees.filter(function (e) { return e.id === id; })[0].fio; };
+  var P = function (id) { return S.persons.filter(function (p) { return p.id === id; })[0].fio; };
+  document.getElementById("t-indirect").innerHTML = "<thead><tr><th>Xodim</th><th>Zanjir</th><th>Xodim</th><th>Prototipda</th></tr></thead><tbody>" + R.indirect.map(function (x) {
+    return "<tr><td>" + esc(E(x.a)) + "</td><td>" + esc(P(x.via[0])) + ' <span class="muted">— ' + esc(cat.linkTypes[x.linkType].toLowerCase()) + " —</span> " + esc(P(x.via[1])) + "</td><td>" + esc(E(x.b)) + '</td><td><a href="prototype/admin-panel.html#/graf?mode=yol&from=e:' + x.a + "&to=e:" + x.b + '">yo\'lni ko\'rish →</a></td></tr>';
+  }).join("") + "</tbody>";
+})();
+</script>
+</body>
+</html>
